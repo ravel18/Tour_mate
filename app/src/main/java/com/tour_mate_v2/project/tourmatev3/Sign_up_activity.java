@@ -8,6 +8,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,6 +22,8 @@ import com.google.firebase.database.FirebaseDatabase;
 public class Sign_up_activity extends AppCompatActivity implements View.OnClickListener {
 
     ProgressBar progressBar;
+
+    TextView textView;
     EditText  editTextFullName, editTextEmail, editTextPassword, editTextEmergencynumber, editTextAddress;
 
     private FirebaseAuth mAuth;
@@ -30,6 +33,7 @@ public class Sign_up_activity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        textView=findViewById(R.id.textViewLogin);
         editTextFullName = findViewById(R.id.editTextFullName);
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPassword = findViewById(R.id.editTextPassword);
@@ -74,7 +78,7 @@ public class Sign_up_activity extends AppCompatActivity implements View.OnClickL
             return;
         }
 
-        if (password.length() < 6) {
+        if (password.length() > 6) {
             editTextPassword.setError("Minimum lenght of password should be 6");
             editTextPassword.requestFocus();
             return;

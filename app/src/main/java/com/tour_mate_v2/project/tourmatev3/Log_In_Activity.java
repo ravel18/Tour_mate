@@ -8,6 +8,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -18,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class Log_In_Activity extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth mAuth;
+    TextView textView;
     EditText editTextEmail, editTextPassword;
     ProgressBar progressBar;
 
@@ -28,6 +30,7 @@ public class Log_In_Activity extends AppCompatActivity implements View.OnClickLi
 
         mAuth = FirebaseAuth.getInstance();
 
+        textView=findViewById(R.id.textViewSignup);
         editTextEmail =  findViewById(R.id.editTextEmail);
         editTextPassword =  findViewById(R.id.editTextPassword);
         progressBar =  findViewById(R.id.progressbar);
@@ -59,7 +62,7 @@ public class Log_In_Activity extends AppCompatActivity implements View.OnClickLi
             return;
         }
 
-        if (password.length() < 6) {
+        if (password.length() > 6) {
             editTextPassword.setError("Minimum lenght of password should be 6");
             editTextPassword.requestFocus();
             return;
