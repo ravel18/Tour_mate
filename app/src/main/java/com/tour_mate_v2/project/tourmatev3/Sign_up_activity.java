@@ -16,7 +16,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class Sign_up_activity extends AppCompatActivity implements View.OnClickListener {
@@ -27,6 +31,9 @@ public class Sign_up_activity extends AppCompatActivity implements View.OnClickL
     EditText  editTextFullName, editTextEmail, editTextPassword, editTextEmergencynumber, editTextAddress;
 
     private FirebaseAuth mAuth;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +46,14 @@ public class Sign_up_activity extends AppCompatActivity implements View.OnClickL
         editTextPassword = findViewById(R.id.editTextPassword);
         editTextEmergencynumber = findViewById(R.id.editTextEmergencynumber);
         editTextAddress = findViewById(R.id.editTextAddress);
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("user");
+
+        User user = new User();
+
         progressBar = findViewById(R.id.progressbar);
+
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -48,11 +62,11 @@ public class Sign_up_activity extends AppCompatActivity implements View.OnClickL
     }
 
     private void registerUser() {
-        final String fullName = editTextFullName.getText().toString().trim();
-        final String email = editTextEmail.getText().toString().trim();
-        final String password = editTextPassword.getText().toString().trim();
-        final String emergencynumber = editTextEmergencynumber.getText().toString().trim();
-        final String address = editTextAddress.getText().toString().trim();
+         String fullName = user.setName(editTextFullName.getText().toString().trim());
+         String email = user.setEmail(editTextEmail.getText().toString().trim());
+         String password =  user.setPassword(editTextPassword.getText().toString().trim());
+         String emergencynumber = user.setPhone(editTextEmergencynumber.getText().toString().trim());
+         String address =  user.setAddress(editTextAddress.getText().toString().trim());
 
         if (fullName.isEmpty()) {
             editTextFullName.setError("Name is required");
@@ -90,7 +104,7 @@ public class Sign_up_activity extends AppCompatActivity implements View.OnClickL
             return;
         }
 
-        if (emergencynumber.length() < 11) {
+        if (emergencynumber.length() > 11) {
             editTextEmergencynumber.setError("Minimum lenght of Emergency Number should be 11");
             editTextEmergencynumber.requestFocus();
             return;
@@ -109,15 +123,21 @@ public class Sign_up_activity extends AppCompatActivity implements View.OnClickL
             public void onComplete(@NonNull Task<AuthResult> task) {
                 progressBar.setVisibility(View.GONE);
                 if (task.isSuccessful()) {
-                    finish();
-                    User user = new User(fullName,email,password,emergencynumber,address);
-                    FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    databaseReference.addValueEventListener(new ValueEventListener() {
                         @Override
-                        public void onComplete( @NonNull Task<Void> task ) {
-                            Toast.makeText(Sign_up_activity.this, "Registration Successfull", Toast.LENGTH_SHORT).show();
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            registerUser();
+                            databaseReference.child("ID").setValue(user);
+                            Toast.makeText(Sign_up_activity.this, "Complete", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Toast.makeText(Sign_up_activity.this,"Error",Toast.LENGTH_LONG).show();
                         }
                     });
-                    startActivity(new Intent(Sign_up_activity.this, ProfileActivity.class));
+                    finish();
+                    startActivity(new Intent(Sign_up_activity.this, MainActivity.class));
                 } else {
 
                     if (task.getException() instanceof FirebaseAuthUserCollisionException) {

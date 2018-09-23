@@ -76,7 +76,7 @@ public class Log_In_Activity extends AppCompatActivity implements View.OnClickLi
                 progressBar.setVisibility(View.GONE);
                 if (task.isSuccessful()) {
                     finish();
-                    Intent intent = new Intent(Log_In_Activity.this, ProfileActivity.class);
+                    Intent intent = new Intent(Log_In_Activity.this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {
@@ -92,7 +92,7 @@ public class Log_In_Activity extends AppCompatActivity implements View.OnClickLi
 
         if (mAuth.getCurrentUser() != null) {
             finish();
-            startActivity(new Intent(this, ProfileActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
         }
     }
 
