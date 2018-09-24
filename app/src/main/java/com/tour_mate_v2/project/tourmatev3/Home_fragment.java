@@ -17,9 +17,14 @@ public class Home_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home_fragment, container,false);
 
-        //button_Add_Event = view.findViewById(R.id.button_Add_Event);
+        button_Add_Event = view.findViewById(R.id.button_Add_Event);
 
 
         return view;
+    }
+
+    public static android.support.v4.app.Fragment newInstance() {
+        Profile_Frgament home_Fragment = new Profile_Frgament();
+        return home_Fragment;
     }
 }

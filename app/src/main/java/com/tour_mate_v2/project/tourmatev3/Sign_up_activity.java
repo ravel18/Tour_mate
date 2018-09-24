@@ -28,12 +28,11 @@ public class Sign_up_activity extends AppCompatActivity implements View.OnClickL
     ProgressBar progressBar;
 
     TextView textView;
-    EditText  editTextFullName, editTextEmail, editTextPassword, editTextEmergencynumber, editTextAddress;
+    private EditText  editTextFullName, editTextEmail, editTextPassword, editTextEmergencynumber, editTextAddress;
 
     private FirebaseAuth mAuth;
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
-    User user;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,23 +49,26 @@ public class Sign_up_activity extends AppCompatActivity implements View.OnClickL
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("user");
 
-        User user = new User();
-
         progressBar = findViewById(R.id.progressbar);
 
 
         mAuth = FirebaseAuth.getInstance();
+
+
 
         findViewById(R.id.buttonSignUp).setOnClickListener(this);
         findViewById(R.id.textViewLogin).setOnClickListener(this);
     }
 
     private void registerUser() {
-         String fullName = user.setName(editTextFullName.getText().toString().trim());
-         String email = user.setEmail(editTextEmail.getText().toString().trim());
-         String password =  user.setPassword(editTextPassword.getText().toString().trim());
-         String emergencynumber = user.setPhone(editTextEmergencynumber.getText().toString().trim());
-         String address =  user.setAddress(editTextAddress.getText().toString().trim());
+
+        final String fullName = editTextFullName.getText().toString().trim();
+        final String email = editTextEmail.getText().toString().trim();
+        String password = editTextPassword.getText().toString().trim();
+        final String emergencynumber = editTextEmergencynumber.getText().toString().trim();
+        final String address = editTextAddress.getText().toString().trim();
+
+
 
         if (fullName.isEmpty()) {
             editTextFullName.setError("Name is required");
@@ -117,7 +119,7 @@ public class Sign_up_activity extends AppCompatActivity implements View.OnClickL
         }
 
         progressBar.setVisibility(View.VISIBLE);
-
+        
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -127,7 +129,12 @@ public class Sign_up_activity extends AppCompatActivity implements View.OnClickL
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             registerUser();
-                            databaseReference.child("ID").setValue(user);
+                            User user = new User(
+                                    editTextFullName.getText().toString(),
+                                    editTextEmail.getText().toString(),
+                                    editTextEmergencynumber.getText().toString(),
+                                    editTextAddress.getText().toString());
+                            databaseReference.child(editTextFullName.getText().toString()).setValue(user);
                             Toast.makeText(Sign_up_activity.this, "Complete", Toast.LENGTH_SHORT).show();
                         }
 

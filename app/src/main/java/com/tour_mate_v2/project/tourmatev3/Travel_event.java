@@ -69,8 +69,6 @@ public class Travel_event extends AppCompatActivity implements View.OnClickListe
             datePickerDialog.show();
 
         }
-
-
     }
-    }
+}
 

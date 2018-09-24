@@ -2,62 +2,61 @@ package com.tour_mate_v2.project.tourmatev3;
 
 public class User {
 
-    private String name,email,phone,address, password;
+    private String name;
+    private String email;
+    private String password;
+    private String phone;
+    private String address;
 
-
-    public User(String name, String email, String phone, String address, String password) {
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.address = address;
-        this.password = password;
-    }
 
     public User() {
+    }
+
+    public User(String name, String email, String password, String phone) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.address = address;
     }
 
     public String getName() {
         return name;
     }
 
-    public String setName(String name) {
+    public void setName(String name) {
         this.name = name;
-        return name;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public String setEmail(String email) {
+    public void setEmail(String email) {
         this.email = email;
-        return email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public String setPhone(String phone) {
-        this.phone = phone;
-        return phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public String setAddress(String address) {
-        this.address = address;
-        return address;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public String setPassword(String password) {
+    public void setPassword(String password) {
         this.password = password;
-        return password;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

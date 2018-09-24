@@ -11,13 +11,12 @@
 
         <ImageView
             android:id="@+id/profile_image"
-            android:background="@drawable/profile"
+            android:background="@drawable/user_male"
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/user_male" />
+            android:layout_marginTop="20dp" />
 
         <TextView
             android:id="@+id/nametv"
